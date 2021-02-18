@@ -1,21 +1,37 @@
 'use strict';
 
-const todoControl = document.querySelector('.todo-control'),
-    headerInput = document.querySelector('.header-input'),
-    todoList = document.querySelector('.todo-list'),
-    todoCompleted = document.querySelector('.todo-completed');
+const todoControl = document.querySelector('.todo-control'),//форма
+    headerInput = document.querySelector('.header-input'),//Какие планы?
+    todoList = document.querySelector('.todo-list'),//Сварить кофе
+    todoCompleted = document.querySelector('.todo-completed'),//Помыть посуд
+    headerButton = document.querySelector('.header-button');
+
+let todoData = [];
+document.addEventListener('keydown', function () {
+    if (headerInput.value === '') {
+        headerButton.disabled = true;
+    } else {
+        headerButton.disabled = false;
+    }
+});
+document.addEventListener('mousedown', function () {
+    if (headerInput.value === '') {
+        headerButton.disabled = true;
+    } else {
+        headerButton.disabled = false;
+    }
+});
 
 
-const todoData = localStorage.getItem('list');
-if (todoData) {
-    todoList.innerHTML = JSON.parse('list');
-}
+let storageGetItem = function () {
+    if (localStorage.todoList) {
+        todoData = JSON.parse(localStorage.todoList);
+    } else { todoData = []; }
+};
+storageGetItem();
 
-
-
-
-
-const render = function () {
+const render = function () { //очищает содержание текста
+    headerInput.value = '';
     todoList.textContent = '';
     todoCompleted.textContent = '';
 
@@ -37,13 +53,14 @@ const render = function () {
             todoList.append(li);
         }
 
+
         const btnTodoComplate = li.querySelector('.todo-complete');
         btnTodoComplate.addEventListener('click', function () {
 
             item.completed = !item.completed;
+            localStorage.todoList = JSON.stringify(todoData);
             render();
         });
-
         const btnTodoRemove = li.querySelector('.todo-remove');
         btnTodoRemove.addEventListener('click', function () {
             todoData.splice(i, 1);
@@ -51,8 +68,9 @@ const render = function () {
             render();
         });
 
+
     });
-    localStorage.setItem('list', JSON.stringify(todoData));
+    localStorage.todoList = JSON.stringify(todoData);
 };
 
 
@@ -65,14 +83,13 @@ todoControl.addEventListener('submit', function (event) {
         value: headerInput.value,
         completed: false
     };
-
-
     todoData.push(newTodo);
-    localStorage.setItem('list', JSON.stringify(todoControl));
+
+    localStorage.todoList = JSON.stringify(todoData);
 
     render();
 
 });
-
-
+localStorage.todoList = JSON.stringify(todoData);
+render();
 
