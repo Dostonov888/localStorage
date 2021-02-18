@@ -4,7 +4,7 @@ const todoControl = document.querySelector('.todo-control'),//форма
     headerInput = document.querySelector('.header-input'),//Какие планы?
     todoList = document.querySelector('.todo-list'),//Сварить кофе
     todoCompleted = document.querySelector('.todo-completed'),//Помыть посуд
-    headerButton = document.querySelector('.header-button');
+    headerButton = document.getElementById('add');
 
 let todoData = [];
 document.addEventListener('keydown', function () {
@@ -24,9 +24,7 @@ document.addEventListener('mousedown', function () {
 
 
 let storageGetItem = function () {
-    if (localStorage.todoList) {
-        todoData = JSON.parse(localStorage.todoList);
-    } else { todoData = []; }
+    todoData = JSON.parse(localStorage.todoList) || [];
 };
 storageGetItem();
 
